@@ -23,7 +23,6 @@ public class GameLogic {
         inputHandler.update(gc.getInput());
         if (inputHandler.hasMoved()) {
             player.move(inputHandler.getMovement());
-            //Log.print("Player Movement: "+player.getPos().getX()+","+player.getPos().getY());
         }
     }
 
