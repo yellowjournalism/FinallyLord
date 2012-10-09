@@ -19,8 +19,8 @@ public class Dungeon extends Map {
         player_pos = p;
         level = new HashMap<Integer, Tile>();
         actors = new HashMap<Integer, Actor>();
-        sizex = 20;
-        sizey = 20;
+        sizex = 100;
+        sizey = 100;
         generate();
     }
 
