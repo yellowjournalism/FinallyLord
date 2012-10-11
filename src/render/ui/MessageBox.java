@@ -1,9 +1,27 @@
+/*
+ * This file is part of Finally Lord.
+ *
+ *      Finally Lord is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      Finally Lord is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package render.ui;
 
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.SpriteSheetFont;
+import utility.Log;
 
 import java.util.ArrayList;
 
@@ -23,13 +41,19 @@ public class MessageBox {
             e.printStackTrace();
         }
         addText("This is a really long string that maybe one day will be automatically split but maybe not who knows. It turns out this string does get split which is pretty awesome considering the circumstances.");
-
+        Log.setBox(this);
     }
 
     public void render() {
         //font.drawString(100,600,"lol\nwut");
-        for (int c = 0; c < log.size(); c++) {
-            drawText(log.get(c), 0, 540 + c * font.getLineHeight());
+        int start = log.size() - 22;
+        if (start < 0) {
+            start = 0;
+        }
+        int renderpos = 0;
+        for (int c = start; c < log.size(); c++) {
+            drawText(log.get(c), 0, 540 + renderpos * font.getLineHeight());
+            renderpos++;
         }
     }
 
