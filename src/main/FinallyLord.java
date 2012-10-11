@@ -8,13 +8,15 @@ import org.newdawn.slick.SlickException;
 
 public class FinallyLord extends BasicGame {
     GameLogic gameLogic;
+
     public FinallyLord() {
         super("Finally Lord");
     }
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        gameLogic=new GameLogic();
+        gameLogic = new GameLogic();
+        gameContainer.setVSync(true);
     }
 
     @Override
