@@ -18,10 +18,8 @@
 package main;
 
 import logic.GameLogic;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
+
 
 public class FinallyLord extends BasicGame {
     GameLogic gameLogic;
@@ -33,6 +31,7 @@ public class FinallyLord extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         gameLogic = new GameLogic();
+        gameContainer.getGraphics().setBackground(new Color(0.1f, 0.1f, 0.1f));
     }
 
     @Override
