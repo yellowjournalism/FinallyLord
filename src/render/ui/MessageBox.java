@@ -39,13 +39,14 @@ public class MessageBox {
     public MessageBox(float scale) {
         log = new ArrayList<String>();
         this.scale = scale;
-        maxchar = 80;
+        maxchar = 105;
 
         try {
             sheet = new SpriteSheet("data/img/lofi_font_big_ascii_color.png", 8, 8);
             font = new SpriteSheetFont(sheet, ' ');
-            jFont = new Font("monospaced", Font.PLAIN, 15);
+            jFont = new Font("sansserif", Font.BOLD, 15);
             uFont = new UnicodeFont(jFont);
+            //uFont=new UnicodeFont("data/fonts/Viking_n.ttf",13,false,false);
             uFont.addAsciiGlyphs();
             uFont.addGlyphs(400, 600);
             uFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
@@ -74,7 +75,7 @@ public class MessageBox {
         }
         int renderpos = 0;
         for (int c = start; c < log.size(); c++) {
-            drawText(log.get(c), 0, 540 + renderpos * uFont.getLineHeight());
+            drawText(log.get(c), 12, 540 + renderpos * uFont.getLineHeight());
             renderpos++;
         }
     }
