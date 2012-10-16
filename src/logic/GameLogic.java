@@ -17,6 +17,7 @@
 
 package logic;
 
+import actor.ActionHandler;
 import org.newdawn.slick.GameContainer;
 import player.Player;
 import render.Render;
@@ -30,11 +31,13 @@ public class GameLogic {
     Render render;
     Dungeon dungeon;
 
+
     public GameLogic() {
         inputHandler = new InputHandler();
         player = new Player(new Point(0, 0));
         render = new Render(player.getPos());
         dungeon = new Dungeon(player.getPos());
+        ActionHandler.init();
     }
 
     public void update(GameContainer gc) {
