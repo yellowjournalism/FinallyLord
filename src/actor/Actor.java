@@ -19,10 +19,12 @@ package actor;
 
 import render.SpriteID;
 import utility.Point;
+import utility.Rand;
 
 public class Actor {
     Point position;
     SpriteID spriteID;
+    private boolean hasmoved;
 
     public Actor(Point pos, ActorType type) {
         spriteID = type.getSpriteID();
@@ -33,7 +35,28 @@ public class Actor {
 
     }
 
+    public void runTurn() {
+        if (Rand.oneIn(2)) {
+            int x = 1 - Rand.nextInt(3);
+            int y = 1 - Rand.nextInt(3);
+            hasmoved = true;
+            position = position.add(new Point(x, y));
+        }
+    }
+
+    public boolean hasMoved() {
+        return hasmoved;
+    }
+
+    public void moveHandled() {
+        hasmoved = false;
+    }
+
     public SpriteID getSpriteID() {
         return spriteID;
+    }
+
+    public Point getPos() {
+        return position;
     }
 }

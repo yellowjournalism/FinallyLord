@@ -39,9 +39,11 @@ public class GameLogic {
 
     public void update(GameContainer gc) {
         inputHandler.update(gc.getInput());
+        dungeon.update(); //TODO only update active world
         if (inputHandler.hasMoved()) {
             Log.print("Player moved!: " + inputHandler.getMovement().getX() + "," + inputHandler.getMovement().getY());
             player.move(inputHandler.getMovement());
+            dungeon.runTurns();//TODO make sure only correct world gets its turns ran.
         }
     }
 

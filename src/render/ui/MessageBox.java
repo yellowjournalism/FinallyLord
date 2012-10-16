@@ -46,7 +46,7 @@ public class MessageBox {
             font = new SpriteSheetFont(sheet, ' ');
             jFont = new Font("sansserif", Font.BOLD, 15);
             uFont = new UnicodeFont(jFont);
-            //uFont=new UnicodeFont("data/fonts/Viking_n.ttf",13,false,false);
+            //uFont=new UnicodeFont("data/fonts/Viking_n.ttf",13,false,false); //This is for loading custom fonts
             uFont.addAsciiGlyphs();
             uFont.addGlyphs(400, 600);
             uFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
@@ -54,7 +54,9 @@ public class MessageBox {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        addText("This is a really long string that maybe one day will be automatically split but maybe not who knows. It turns out this string does get split which is pretty awesome considering the circumstances.");
+        //addText("This is a really long string that maybe one day will be automatically split but maybe not who knows. It turns out this string does get split which is pretty awesome considering the circumstances.");
+        addText("split split split split");
+
         Log.setBox(this);
         //testFonts();
     }
