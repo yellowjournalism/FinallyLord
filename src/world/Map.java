@@ -21,15 +21,20 @@ package world;
 import actor.Actor;
 import world.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Map {
     public abstract HashMap<Integer, Tile> getTileMap();
 
-    public abstract HashMap<Integer, Actor> getActorMap();
+    public abstract ArrayList<Actor> getActors();
+
+    public abstract HashMap<Integer, Actor> getActorHash();
 
     public abstract int genKey(int x, int y);
 
     public abstract void update();
+
+    public abstract void runTurns();
 
 }

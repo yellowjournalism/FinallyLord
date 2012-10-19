@@ -24,6 +24,7 @@ import utility.Point;
 import world.Map;
 import world.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Render {
@@ -53,7 +54,8 @@ public class Render {
     public void render(Map map) {
 
         HashMap<Integer, Tile> tileHashMap = map.getTileMap();
-        HashMap<Integer, Actor> actorHashMap = map.getActorMap();
+        ArrayList<Actor> actors = map.getActors();
+        HashMap<Integer, Actor> actorHashMap = map.getActorHash();
 
         Point top_left = new Point(playerpos.getX() - tilesx, playerpos.getY() - tilesy);
 
@@ -66,18 +68,35 @@ public class Render {
                     Image image = environment.getSprite(tile.getSpriteID());
                     image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
                 }
-
                 //Actors
                 Actor actor = actorHashMap.get(map.genKey(x, y));
                 if (actor != null) {
                     Image image = actor_sprites.getSprite(actor.getSpriteID());
                     image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
                 }
+
             }
         }
+//        for (int c = 0; c < actors.size(); c++) {
+//            Actor a = actors.get(c);
+//
+//            Point pos = a.getPos();
+//            if (inBounds(pos.getX() - tilesx, pos.getY() - tilesy, pos.getX() + tilesx, pos.getY() + tilesy, pos.getX(), pos.getY())) {
+//                Image image = actor_sprites.getSprite(a.getSpriteID());
+//                image.draw((float) ((pos.getX() - top_left.getX()) * ppt), (float) ((pos.getY() - top_left.getY()) * ppt), scale);
+//            }
+//
+//        }
         Image player = actor_sprites.getSprite(ActorSprite.player);
 
         player.draw((float) ((playerpos.getX() - top_left.getX()) * ppt), (float) ((playerpos.getY() - top_left.getY()) * ppt), scale);
         messageBox.render();
+    }
+
+    private boolean inBounds(int x1, int y1, int x2, int y2, int x, int y) {
+        if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+            return true;
+        }
+        return false;
     }
 }

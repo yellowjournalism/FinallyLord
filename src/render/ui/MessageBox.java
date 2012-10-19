@@ -54,8 +54,7 @@ public class MessageBox {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        addText("This is a really long string that maybe one day will be automatically split but maybe not who knows." +
-                "It turns out this string does get split which is pretty awesome considering the circumstances.");
+        addText("This is a really long string that maybe one day will be automatically split but maybe not who knows. It turns out this string does get split which is pretty awesome considering the circumstances.");
         Log.setBox(this);
         //testFonts();
     }

@@ -28,7 +28,8 @@ import java.util.HashMap;
 
 public class Dungeon extends Map {
     HashMap<Integer, Tile> level; //TODO replace this with proper level class for multiple level dungeons
-    HashMap<Integer, Actor> actors;
+    ArrayList<Actor> actors;
+    HashMap<Integer, Actor> actorHash;
     Point player_pos;
 
     int sizex, sizey;
@@ -36,7 +37,8 @@ public class Dungeon extends Map {
     public Dungeon(Point p) {
         player_pos = p;
         level = new HashMap<Integer, Tile>();
-        actors = new HashMap<Integer, Actor>();
+        actors = new ArrayList<Actor>();
+        actorHash = new HashMap<Integer, Actor>();
         sizex = 100;
         sizey = 100;
         generate();
@@ -48,12 +50,31 @@ public class Dungeon extends Map {
 
     @Override
     public void update() {
-        //Run actor AI
-        ArrayList<Actor> actorlist = new ArrayList<Actor>(actors.values());
-        for (int c = 0; c < actorlist.size(); c++) {
-            Actor a = actorlist.get(c);
+        actors = new ArrayList<Actor>(actorHash.values());
+
+        for (int c = 0; c < actors.size(); c++) {
+            Actor a = actors.get(c);
             a.update();
         }
+    }
+
+    @Override
+    public void runTurns() {
+        for (int c = 0; c < actors.size(); c++) {
+            Actor actor = actors.get(c);
+            Point oldpos = actor.getPos().copy();
+            actor.runTurn();
+            if (actor.hasMoved()) {
+                actorHash.remove(genKey(oldpos.getX(), oldpos.getY()));
+                Point newpos = actor.getPos().copy();
+                actorHash.put(genKey(newpos.getX(), newpos.getY()), actor);
+            }
+            actor.moveHandled();
+        }
+    }
+
+    public void addActor(Actor a) {
+
     }
 
     private void generate() {
@@ -66,14 +87,15 @@ public class Dungeon extends Map {
                     level.put(genKey(x, y), Tile.WALL_STONE);
                 } else {
                     level.put(genKey(x, y), Tile.FLOOR_STONE);
-                    if (Rand.oneIn(5)) {
-                        actors.put(genKey(x, y), new Actor(new Point(x, y), ActorType.goblin));
+                    if (Rand.oneIn(4)) {
+                        actorHash.put(genKey(x, y), new Actor(new Point(x, y), ActorType.goblin));
                     }
                 }
 
 
             }
         }
+
     }
 
     @Override
@@ -82,8 +104,13 @@ public class Dungeon extends Map {
     }
 
     @Override
-    public HashMap<Integer, Actor> getActorMap() {
+    public ArrayList<Actor> getActors() {
         return actors;
 
+    }
+
+    @Override
+    public HashMap<Integer, Actor> getActorHash() {
+        return actorHash;
     }
 }
