@@ -31,11 +31,24 @@ public class SensesPackage {
         this.tileHashMap = tileHashMap;
     }
 
+    public SensesPackage() {
+        actorHashMap = new HashMap<Integer, Actor>();
+        tileHashMap = new HashMap<Integer, Tile>();
+    }
+
     public HashMap<Integer, Actor> getActors() {
         return actorHashMap;
     }
 
     public HashMap<Integer, Tile> getTiles() {
         return tileHashMap;
+    }
+
+    public void putActor(int key, Actor a) {
+        actorHashMap.put(key, a);
+    }
+
+    public void putTile(int key, Tile t) {
+        tileHashMap.put(key, t);
     }
 }
