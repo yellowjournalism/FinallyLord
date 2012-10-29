@@ -62,10 +62,7 @@ public class Senses {
     private boolean isBlocked(int x, int y) {
         int key = genKey(x, y);
         if (tileHashMap.containsKey(key)) {
-            if (tileHashMap.get(key).isOpaque()) {
-                return false;
-            }
-            return true;
+            return tileHashMap.get(key).isOpaque();
         }
         return true;
     }
@@ -133,45 +130,9 @@ public class Senses {
             castLight(cx, cy, 1, 1.0, 0.0, radius, mult[0][oct], mult[1][oct],
                     mult[2][oct], mult[3][oct], 0);
         }
+        currentSenses.getTiles().put(genKey(cx, cy), tileHashMap.get(genKey(cx, cy)));//Add the players position
         return currentSenses;
     }
-
-//    public SensesPackage getFOV(int cx, int cy, int radius) { //TODO replace this with a proper FOV algorithm
-//        for (int x = cx - radius; x <= cx + radius; x++) {
-//            for (int y = cy - radius; y <= cy + radius; y++) {
-//                if (distance(x, cx, y, cy) <= radius) {
-//                    int dx = Math.abs(x2 - x1);
-//                    int dy = Math.abs(y2 - y1);
-//
-//                    int sx = (x1 < x2) ? 1 : -1;
-//                    int sy = (y1 < y2) ? 1 : -1;
-//
-//                    int err = dx - dy;
-//
-//                    while (true) {
-//                        framebuffer.setPixel(x1, y1, Vec3.one);
-//
-//                        if (x1 == x2 && y1 == y2) {
-//                            break;
-//                        }
-//
-//                        int e2 = 2 * err;
-//
-//                        if (e2 > -dy) {
-//                            err = err - dy;
-//                            x1 = x1 + sx;
-//                        }
-//
-//                        if (e2 < dx) {
-//                            err = err + dx;
-//                            y1 = y1 + sy;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
 
 
 }

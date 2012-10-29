@@ -15,31 +15,36 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package world;
+package actor;
 
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 10/24/12
+ * Time: 2:14 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class CharacterSheet {
+    int[] stats;
+    int HD;
+    int hp, maxhp;
 
-import actor.Actor;
-import actor.SensesPackage;
-import world.tile.Tile;
+    public CharacterSheet() {
+        stats = new int[Stat.STAT_MAX.val()];
+        HD = 10;
+        hp = getStat(Stat.CON) * 10;
+        maxhp = hp;
+    }
 
-import java.util.ArrayList;
-import java.util.HashMap;
+    public int getStat(Stat stat) {
+        return stats[stat.val()];
+    }
 
-public abstract class Map {
-    public abstract HashMap<Integer, Tile> getTileMap();
+    public double physicalCondition() {
+        return (double) hp / (double) maxhp;
+    }
 
-    public abstract ArrayList<Actor> getActors();
-
-    public abstract HashMap<Integer, Actor> getActorHash();
-
-    public abstract int genKey(int x, int y);
-
-    public abstract void update();
-
-    public abstract void runTurns();
-
-    public abstract SensesPackage getPlayerSenses();
-
-    public abstract boolean inBounds(int x, int y);
-
+    public double percievedStrength() {
+        return (double) getStat(Stat.STR) * physicalCondition();
+    }
 }

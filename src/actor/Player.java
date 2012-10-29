@@ -15,31 +15,23 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package world;
+package actor;
+
+import utility.Point;
+
+public class Player {
+    Point pos;
 
 
-import actor.Actor;
-import actor.SensesPackage;
-import world.tile.Tile;
+    public Player(Point p) {
+        pos = p;
+    }
 
-import java.util.ArrayList;
-import java.util.HashMap;
+    public Point getPos() {
+        return pos;
+    }
 
-public abstract class Map {
-    public abstract HashMap<Integer, Tile> getTileMap();
-
-    public abstract ArrayList<Actor> getActors();
-
-    public abstract HashMap<Integer, Actor> getActorHash();
-
-    public abstract int genKey(int x, int y);
-
-    public abstract void update();
-
-    public abstract void runTurns();
-
-    public abstract SensesPackage getPlayerSenses();
-
-    public abstract boolean inBounds(int x, int y);
-
+    public void move(Point dir) {
+        pos.push(dir);
+    }
 }
