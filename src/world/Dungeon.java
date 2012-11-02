@@ -101,7 +101,8 @@ public class Dungeon extends Map {
         for (int c = 0; c < actors.size(); c++) {
             Actor actor = actors.get(c);
             Point oldpos = actor.getPos().copy();
-            actor.runTurn();
+
+            actor.runTurn(senses.shadowCasting(oldpos.getX(), oldpos.getY(), 20));
             if (actor.hasMoved()) {
                 actorHash.remove(genKey(oldpos.getX(), oldpos.getY()));
                 Point newpos = actor.getPos().copy();

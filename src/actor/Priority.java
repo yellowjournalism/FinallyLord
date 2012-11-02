@@ -15,31 +15,28 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package utility;
+package actor;
 
-import java.util.Random;
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 10/31/12
+ * Time: 1:09 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public enum Priority {
+    NONE(0),
+    LOW(100),
+    MEDIUM(200),
+    HIGH(300),
+    HIGHEST(400);
+    int val;
 
-public class Rand {
-    public static Random random = new Random();
-
-    public static int randInt(int min, int max) {
-        int randomNum = random.nextInt(max - min) + min;
-        return randomNum;
+    Priority(int val) {
+        this.val = val;
     }
 
-    public static int nextInt(int max) {
-        return random.nextInt(max);
+    public int val() {
+        return val;
     }
-
-    public static boolean oneIn(int x) {
-        if (nextInt(x) == 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public static float nextFloat() {
-        return random.nextFloat();
-    }
-
 }

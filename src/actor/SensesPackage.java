@@ -17,6 +17,7 @@
 
 package actor;
 
+import utility.Point;
 import world.tile.Tile;
 
 import java.util.HashMap;
@@ -25,15 +26,18 @@ import java.util.HashMap;
 public class SensesPackage {
     private HashMap<Integer, Actor> actorHashMap;
     private HashMap<Integer, Tile> tileHashMap;
+    int sizex;
 
-    public SensesPackage(HashMap<Integer, Actor> actorHashMap, HashMap<Integer, Tile> tileHashMap) {
+    public SensesPackage(HashMap<Integer, Actor> actorHashMap, HashMap<Integer, Tile> tileHashMap, int sizex) {
         this.actorHashMap = actorHashMap;
         this.tileHashMap = tileHashMap;
+        this.sizex = sizex;
     }
 
-    public SensesPackage() {
+    public SensesPackage(int sizex) {
         actorHashMap = new HashMap<Integer, Actor>();
         tileHashMap = new HashMap<Integer, Tile>();
+        this.sizex = sizex;
     }
 
     public HashMap<Integer, Actor> getActors() {
@@ -50,5 +54,13 @@ public class SensesPackage {
 
     public void putTile(int key, Tile t) {
         tileHashMap.put(key, t);
+    }
+
+    public int genKey(int x, int y) {
+        return x * sizex + y;
+    }
+
+    public int genKey(Point p) {
+        return p.getX() * sizex + p.getY();
     }
 }

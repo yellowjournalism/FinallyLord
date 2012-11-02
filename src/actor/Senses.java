@@ -125,7 +125,7 @@ public class Senses {
 
     public SensesPackage shadowCasting(int cx, int cy, int radius) {
         //Calculate lit squares from the given location and radius
-        currentSenses = new SensesPackage();
+        currentSenses = new SensesPackage(sizex);
         for (int oct = 0; oct < 8; oct++) {
             castLight(cx, cy, 1, 1.0, 0.0, radius, mult[0][oct], mult[1][oct],
                     mult[2][oct], mult[3][oct], 0);
