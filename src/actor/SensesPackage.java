@@ -19,6 +19,7 @@ package actor;
 
 import world.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //Used to return a single
@@ -26,13 +27,17 @@ public class SensesPackage {
     private HashMap<Integer, Actor> actorHashMap;
     private HashMap<Integer, Tile> tileHashMap;
 
-    public SensesPackage(HashMap<Integer, Actor> actorHashMap, HashMap<Integer, Tile> tileHashMap) {
+    public SensesPackage(HashMap<Integer, Tile> tileHashMap, HashMap<Integer, Actor> actorHashMap) {
         this.actorHashMap = actorHashMap;
         this.tileHashMap = tileHashMap;
     }
 
     public HashMap<Integer, Actor> getActors() {
         return actorHashMap;
+    }
+
+    public ArrayList<Actor> getActorArray() {
+        return new ArrayList<Actor>(actorHashMap.values());
     }
 
     public HashMap<Integer, Tile> getTiles() {

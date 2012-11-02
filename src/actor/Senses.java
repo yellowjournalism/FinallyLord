@@ -42,39 +42,67 @@ public class Senses {
     }
 
     public SensesPackage getFOV(int cx, int cy, int radius) { //TODO replace this with a proper FOV algorithm
+        HashMap<Integer, Tile> tiles = new HashMap<Integer, Tile>();
+        HashMap<Integer, Actor> actors = new HashMap<Integer, Actor>();
         for (int x = cx - radius; x <= cx + radius; x++) {
             for (int y = cy - radius; y <= cy + radius; y++) {
                 if (distance(x, cx, y, cy) <= radius) {
-                    int dx = Math.abs(x2 - x1);
-                    int dy = Math.abs(y2 - y1);
-
-                    int sx = (x1 < x2) ? 1 : -1;
-                    int sy = (y1 < y2) ? 1 : -1;
-
-                    int err = dx - dy;
-
-                    while (true) {
-                        framebuffer.setPixel(x1, y1, Vec3.one);
-
-                        if (x1 == x2 && y1 == y2) {
-                            break;
+                    int x1 = x;
+                    int x2 = cx;
+                    int y1 = y;
+                    int y2 = cy;
+                    int w = x2 - x1;
+                    int h = y2 - y1;
+                    int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+                    if (w < 0) dx1 = -1;
+                    else if (w > 0) dx1 = 1;
+                    if (h < 0) dy1 = -1;
+                    else if (h > 0) dy1 = 1;
+                    if (w < 0) dx2 = -1;
+                    else if (w > 0) dx2 = 1;
+                    int longest = Math.abs(w);
+                    int shortest = Math.abs(h);
+                    if (!(longest > shortest)) {
+                        longest = Math.abs(h);
+                        shortest = Math.abs(w);
+                        if (h < 0) dy2 = -1;
+                        else if (h > 0) dy2 = 1;
+                        dx2 = 0;
+                    }
+                    boolean fail = false;
+                    int numerator = longest >> 1;
+                    for (int i = 0; i <= longest; i++) {
+                        int key = genKey(x1, y1);
+                        if (tileHashMap.containsKey(key)) {
+                            if (tileHashMap.get(key).isOpaque()) {
+                                fail = true;
+                                break;
+                            }
                         }
-
-                        int e2 = 2 * err;
-
-                        if (e2 > -dy) {
-                            err = err - dy;
-                            x1 = x1 + sx;
+                        numerator += shortest;
+                        if (!(numerator < longest)) {
+                            numerator -= longest;
+                            x1 += dx1;
+                            y1 += dy1;
+                        } else {
+                            x1 += dx2;
+                            y1 += dy2;
                         }
-
-                        if (e2 < dx) {
-                            err = err + dx;
-                            y1 = y1 + sy;
+                    }
+                    int key = genKey(x, y);
+                    if (!fail) {
+                        if (tileHashMap.containsKey(key)) {
+                            tiles.put(key, tileHashMap.get(key));
+                        }
+                        if (actorHashMap.containsKey(key)) {
+                            actors.put(key, actorHashMap.get(key));
                         }
                     }
                 }
             }
         }
+
+        return new SensesPackage(tiles, actors);
 
     }
 

@@ -18,6 +18,7 @@
 package render;
 
 import actor.Actor;
+import actor.SensesPackage;
 import org.newdawn.slick.Image;
 import render.ui.MessageBox;
 import utility.Point;
@@ -52,10 +53,10 @@ public class Render {
     }
 
     public void render(Map map) {
-
-        HashMap<Integer, Tile> tileHashMap = map.getTileMap();
-        ArrayList<Actor> actors = map.getActors();
-        HashMap<Integer, Actor> actorHashMap = map.getActorHash();
+        SensesPackage playerSenses = map.getPlayerSenses();
+        HashMap<Integer, Tile> tileHashMap = playerSenses.getTiles();
+        ArrayList<Actor> actors = playerSenses.getActorArray();
+        HashMap<Integer, Actor> actorHashMap = playerSenses.getActors();
 
         Point top_left = new Point(playerpos.getX() - tilesx, playerpos.getY() - tilesy);
 

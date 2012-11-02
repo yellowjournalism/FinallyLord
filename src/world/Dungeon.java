@@ -19,6 +19,8 @@ package world;
 
 import actor.Actor;
 import actor.ActorType;
+import actor.Senses;
+import actor.SensesPackage;
 import utility.Point;
 import utility.Rand;
 import world.tile.Tile;
@@ -31,6 +33,7 @@ public class Dungeon extends Map {
     ArrayList<Actor> actors;
     HashMap<Integer, Actor> actorHash;
     Point player_pos;
+    Senses senses;
 
     int sizex, sizey;
 
@@ -42,6 +45,7 @@ public class Dungeon extends Map {
         sizex = 100;
         sizey = 100;
         generate();
+        senses = new Senses(level, actorHash, sizex);
     }
 
     public int genKey(int x, int y) {
@@ -71,6 +75,11 @@ public class Dungeon extends Map {
             }
             actor.moveHandled();
         }
+    }
+
+    @Override
+    public SensesPackage getPlayerSenses() {
+        return senses.getFOV(player_pos.getX(), player_pos.getY(), 20);
     }
 
     public void addActor(Actor a) {

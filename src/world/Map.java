@@ -19,6 +19,7 @@ package world;
 
 
 import actor.Actor;
+import actor.SensesPackage;
 import world.tile.Tile;
 
 import java.util.ArrayList;
@@ -36,5 +37,7 @@ public abstract class Map {
     public abstract void update();
 
     public abstract void runTurns();
+
+    public abstract SensesPackage getPlayerSenses();
 
 }
