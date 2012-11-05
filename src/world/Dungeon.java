@@ -44,7 +44,7 @@ public class Dungeon extends Map {
         actorHash = new HashMap<Integer, Actor>();
         sizex = 30;
         sizey = 30;
-        senses = new Senses(level, actorHash, sizex);
+        senses = new Senses(player_pos, level, actorHash, sizex);
         generate();
     }
 

@@ -55,4 +55,10 @@ public class Point {
         return new Point(x, y);
     }
 
+    public boolean equals(Point p) {
+        int _x = p.getX();
+        int _y = p.getY();
+        return x == _x && y == _y;
+    }
+
 }

@@ -24,10 +24,12 @@ public class Actor {
     Point position;
     SpriteID spriteID;
     private boolean hasmoved;
+    AI ai;
 
     public Actor(Point pos, ActorType type) {
         spriteID = type.getSpriteID();
         position = pos;
+        ai = new AI(this);
     }
 
     public void update() {
@@ -35,7 +37,7 @@ public class Actor {
     }
 
     public void runTurn(SensesPackage senses) {
-
+        ai.run(senses);
     }
 
 //    public void runTurn(SensesPackage senses) {
@@ -91,5 +93,14 @@ public class Actor {
 
     public Point getPos() {
         return position;
+    }
+
+    void move(Point dir) {
+        position.push(dir);
+    }
+
+    void moveTo(Point pos) {
+        position = pos;
+        hasmoved = true;
     }
 }
