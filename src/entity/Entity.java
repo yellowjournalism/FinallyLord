@@ -15,32 +15,14 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package world;
+package entity;
 
-
-import actor.Actor;
-import actor.SensesPackage;
-import world.tile.Tile;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public abstract class Map {
-    public abstract HashMap<Integer, Tile> getTileMap();
-
-    public abstract ArrayList<Actor> getActors();
-
-    public abstract HashMap<Integer, Actor> getActorHash();
-
-    public abstract int genKey(int x, int y);
-
-    public abstract void update();
-
-    public abstract void runTurns();
-
-    public abstract SensesPackage getPlayerSenses();
-
-    public abstract boolean inBounds(int x, int y);
-
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 10/24/12
+ * Time: 2:57 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class Entity {
 }

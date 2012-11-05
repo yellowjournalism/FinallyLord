@@ -21,11 +21,11 @@ import actor.Actor;
 import actor.SensesPackage;
 import org.newdawn.slick.Image;
 import render.ui.MessageBox;
+import utility.Log;
 import utility.Point;
 import world.Map;
 import world.tile.Tile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Render {
@@ -37,6 +37,8 @@ public class Render {
     SpriteMap actor_sprites;
     SpriteMap obj_sprites;
     MessageBox messageBox;
+    SensesPackage playerSenses;
+    boolean updateSenses;
 
     public Render(Point player_pos) {
         playerpos = player_pos;
@@ -47,47 +49,55 @@ public class Render {
         tilesize = tilesy * 2 + 1;//Each side plus the middle for the player
         ppt = 540f / (float) tilesize;
         scale = ppt / 8f;
+        updateSenses = true;
         messageBox = new MessageBox(scale);
 
 
     }
 
+    public void flagSenses() {
+        updateSenses = true;
+    }
+
     public void render(Map map) {
-        SensesPackage playerSenses = map.getPlayerSenses();
+
+        if (updateSenses) {
+            long startTime = System.currentTimeMillis();
+            playerSenses = map.getPlayerSenses();
+            long endTime = System.currentTimeMillis();
+            Log.print("Shadowcasting time: " + (endTime - startTime));
+            updateSenses = false;
+        }
+//        HashMap<Integer, Tile> tileHashMap = map.getTileMap();
+//        ArrayList<Actor> actors = map.getActors();
+//        HashMap<Integer, Actor> actorHashMap = map.getActorHash();
         HashMap<Integer, Tile> tileHashMap = playerSenses.getTiles();
-        ArrayList<Actor> actors = playerSenses.getActorArray();
         HashMap<Integer, Actor> actorHashMap = playerSenses.getActors();
+
 
         Point top_left = new Point(playerpos.getX() - tilesx, playerpos.getY() - tilesy);
 
         //image.draw((float) ((x - top_left.x) * ppt), (float) ((y - top_left.y) * ppt), scale)
         for (int x = top_left.getX(); x <= playerpos.getX() + tilesx; x++) {
             for (int y = top_left.getY(); y <= playerpos.getY() + tilesy; y++) {
-                //Tiles
-                Tile tile = tileHashMap.get(map.genKey(x, y));
-                if (tile != null) {
-                    Image image = environment.getSprite(tile.getSpriteID());
-                    image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
-                }
-                //Actors
-                Actor actor = actorHashMap.get(map.genKey(x, y));
-                if (actor != null) {
-                    Image image = actor_sprites.getSprite(actor.getSpriteID());
-                    image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
+                if (map.inBounds(x, y)) {  //TODO Make a better system for drawing in bounds only
+                    //Tiles
+                    Tile tile = tileHashMap.get(map.genKey(x, y));
+                    if (tile != null) {
+                        Image image = environment.getSprite(tile.getSpriteID());
+                        image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
+                    }
+                    //Actors
+                    Actor actor = actorHashMap.get(map.genKey(x, y));
+                    if (actor != null) {
+                        Image image = actor_sprites.getSprite(actor.getSpriteID());
+                        image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
+                    }
                 }
 
             }
         }
-//        for (int c = 0; c < actors.size(); c++) {
-//            Actor a = actors.get(c);
-//
-//            Point pos = a.getPos();
-//            if (inBounds(pos.getX() - tilesx, pos.getY() - tilesy, pos.getX() + tilesx, pos.getY() + tilesy, pos.getX(), pos.getY())) {
-//                Image image = actor_sprites.getSprite(a.getSpriteID());
-//                image.draw((float) ((pos.getX() - top_left.getX()) * ppt), (float) ((pos.getY() - top_left.getY()) * ppt), scale);
-//            }
-//
-//        }
+
         Image player = actor_sprites.getSprite(ActorSprite.player);
 
         player.draw((float) ((playerpos.getX() - top_left.getX()) * ppt), (float) ((playerpos.getY() - top_left.getY()) * ppt), scale);

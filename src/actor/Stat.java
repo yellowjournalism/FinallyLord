@@ -15,22 +15,20 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package player;
+package actor;
 
-import utility.Point;
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 10/24/12
+ * Time: 2:22 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public enum Stat {
+    STR, DEX, CON, INT, WIS, CHA,
+    STAT_MAX;//Keep this last!
 
-public class Player {
-    Point pos;
-
-    public Player(Point p) {
-        pos = p;
-    }
-
-    public Point getPos() {
-        return pos;
-    }
-
-    public void move(Point dir) {
-        pos.push(dir);
+    public int val() {
+        return this.ordinal();
     }
 }

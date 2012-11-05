@@ -18,41 +18,45 @@
 package logic;
 
 import actor.ActionHandler;
+import actor.Player;
 import org.newdawn.slick.GameContainer;
-import player.Player;
 import render.Render;
 import utility.Log;
 import utility.Point;
 import world.Dungeon;
+import world.Map;
 
 public class GameLogic {
     InputHandler inputHandler;
     Player player;
     Render render;
     Dungeon dungeon;
+    Map activeMap;
 
 
     public GameLogic() {
         inputHandler = new InputHandler();
         player = new Player(new Point(0, 0));
         render = new Render(player.getPos());
-        dungeon = new Dungeon(player.getPos());
+        dungeon = new Dungeon(player);
+        activeMap = dungeon;
         ActionHandler.init();
     }
 
     public void update(GameContainer gc) {
         inputHandler.update(gc.getInput());
-        dungeon.update(); //TODO only update active world
+        activeMap.update(); //TODO only update active world
         if (inputHandler.hasMoved()) {
             Log.print("Player moved!: " + inputHandler.getMovement().getX() + "," + inputHandler.getMovement().getY());
             player.move(inputHandler.getMovement());
-            dungeon.runTurns();//TODO make sure only correct world gets its turns ran.
+            render.flagSenses();
+            activeMap.runTurns();//TODO make sure only correct world gets its turns ran.
         }
     }
 
     public void render() {
         //TODO handle player state to switch between maps
-        render.render(dungeon);
+        render.render(activeMap);
     }
 
 }

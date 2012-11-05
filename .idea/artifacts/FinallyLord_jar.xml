@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="FinallyLord:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FinallyLord_jar</output-path>
+    <root id="archive" name="FinallyLord.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="FinallyLord" />
+      <element id="extracted-dir" path="$USER_HOME$/slick/lib/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/slick/lib/jinput.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/slick/lib/slick.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/slick/lib/slick-util.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -24,7 +24,14 @@ import java.util.HashMap;
 public class Senses {
     private HashMap<Integer, Tile> tileHashMap;
     private HashMap<Integer, Actor> actorHashMap;
+    private SensesPackage currentSenses;
     private int sizex;
+    private int[][] mult = {
+            {1, 0, 0, -1, -1, 0, 0, 1},
+            {0, 1, -1, 0, 0, -1, 1, 0},
+            {0, 1, 1, 0, 0, -1, -1, 0},
+            {1, 0, 0, 1, -1, 0, 0, -1}
+    };
 
     public Senses(HashMap<Integer, Tile> tileHashMap, HashMap<Integer, Actor> actorHashMap, int sizex) {
         this.tileHashMap = tileHashMap;
@@ -41,69 +48,90 @@ public class Senses {
         return Math.sqrt(c);
     }
 
-    public SensesPackage getFOV(int cx, int cy, int radius) { //TODO replace this with a proper FOV algorithm
-        HashMap<Integer, Tile> tiles = new HashMap<Integer, Tile>();
-        HashMap<Integer, Actor> actors = new HashMap<Integer, Actor>();
-        for (int x = cx - radius; x <= cx + radius; x++) {
-            for (int y = cy - radius; y <= cy + radius; y++) {
-                if (distance(x, cx, y, cy) <= radius) {
-                    int x1 = x;
-                    int x2 = cx;
-                    int y1 = y;
-                    int y2 = cy;
-                    int w = x2 - x1;
-                    int h = y2 - y1;
-                    int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
-                    if (w < 0) dx1 = -1;
-                    else if (w > 0) dx1 = 1;
-                    if (h < 0) dy1 = -1;
-                    else if (h > 0) dy1 = 1;
-                    if (w < 0) dx2 = -1;
-                    else if (w > 0) dx2 = 1;
-                    int longest = Math.abs(w);
-                    int shortest = Math.abs(h);
-                    if (!(longest > shortest)) {
-                        longest = Math.abs(h);
-                        shortest = Math.abs(w);
-                        if (h < 0) dy2 = -1;
-                        else if (h > 0) dy2 = 1;
-                        dx2 = 0;
+    private void light(int x, int y) {
+        int key = genKey(x, y);
+        if (actorHashMap.containsKey(key)) {
+            currentSenses.putActor(key, actorHashMap.get(key));
+        }
+        if (tileHashMap.containsKey(key)) {
+            currentSenses.putTile(key, tileHashMap.get(key));
+        }
+
+    }
+
+    private boolean isBlocked(int x, int y) {
+        int key = genKey(x, y);
+        if (tileHashMap.containsKey(key)) {
+            return tileHashMap.get(key).isOpaque();
+        }
+        return true;
+    }
+
+    private void castLight(int cx, int cy, int row, double start,
+                           double end, int radius, int xx, int xy, int yx, int yy, int depth) {
+        //Recursive lightcasting function
+        if (start < end) {
+            return;
+        }
+        int radius_squared = radius * radius;
+        for (int j = row; j <= radius; j++) {
+            int dx = -j - 1;
+            int dy = -j;
+            boolean blocked = false;
+            double newStartSlope = 0.0;
+            while (dx <= 0) {
+                dx += 1;
+                //Translate the dx,dy coordinates into map coordinates
+                int x = cx + dx * xx + dy * xy;
+                int y = cy + dx * yx + dy * yy;
+                //lslope and rslope store the slopes of the left and right
+                //extremites of the square were considering:
+                double lslope = (dx - 0.5) / (dy + 0.5);
+                double rslope = (dx + 0.5) / (dy - 0.5);
+                if (start < rslope) {
+                    continue;
+                } else if (end > lslope) {
+                    break;
+                } else {
+                    //our light beam is touching this square; light it:
+                    if (dx * dx + dy * dy < radius_squared) {
+                        light(x, y);
                     }
-                    boolean fail = false;
-                    int numerator = longest >> 1;
-                    for (int i = 0; i <= longest; i++) {
-                        int key = genKey(x1, y1);
-                        if (tileHashMap.containsKey(key)) {
-                            if (tileHashMap.get(key).isOpaque()) {
-                                fail = true;
-                                break;
-                            }
-                        }
-                        numerator += shortest;
-                        if (!(numerator < longest)) {
-                            numerator -= longest;
-                            x1 += dx1;
-                            y1 += dy1;
+                    if (blocked) {
+                        //We are scanning a row of blocked squares:
+                        if (isBlocked(x, y)) {
+                            newStartSlope = rslope;
+                            continue;
                         } else {
-                            x1 += dx2;
-                            y1 += dy2;
+                            blocked = false;
+                            start = newStartSlope;
                         }
-                    }
-                    int key = genKey(x, y);
-                    if (!fail) {
-                        if (tileHashMap.containsKey(key)) {
-                            tiles.put(key, tileHashMap.get(key));
-                        }
-                        if (actorHashMap.containsKey(key)) {
-                            actors.put(key, actorHashMap.get(key));
+                    } else {
+                        if (isBlocked(x, y) && j < radius) {
+                            //this is a blocking square, start a child scan
+                            blocked = true;
+                            castLight(cx, cy, j + 1, start, lslope,
+                                    radius, xx, xy, yx, yy, depth + 1);
+                            newStartSlope = rslope;
                         }
                     }
                 }
             }
+            if (blocked) {
+                break;
+            }
         }
+    }
 
-        return new SensesPackage(tiles, actors);
-
+    public SensesPackage shadowCasting(int cx, int cy, int radius) {
+        //Calculate lit squares from the given location and radius
+        currentSenses = new SensesPackage(sizex);
+        for (int oct = 0; oct < 8; oct++) {
+            castLight(cx, cy, 1, 1.0, 0.0, radius, mult[0][oct], mult[1][oct],
+                    mult[2][oct], mult[3][oct], 0);
+        }
+        currentSenses.getTiles().put(genKey(cx, cy), tileHashMap.get(genKey(cx, cy)));//Add the players position
+        return currentSenses;
     }
 
 

@@ -15,32 +15,28 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package world;
+package actor;
 
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 10/31/12
+ * Time: 1:09 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public enum Priority {
+    NONE(0),
+    LOW(100),
+    MEDIUM(200),
+    HIGH(300),
+    HIGHEST(400);
+    int val;
 
-import actor.Actor;
-import actor.SensesPackage;
-import world.tile.Tile;
+    Priority(int val) {
+        this.val = val;
+    }
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public abstract class Map {
-    public abstract HashMap<Integer, Tile> getTileMap();
-
-    public abstract ArrayList<Actor> getActors();
-
-    public abstract HashMap<Integer, Actor> getActorHash();
-
-    public abstract int genKey(int x, int y);
-
-    public abstract void update();
-
-    public abstract void runTurns();
-
-    public abstract SensesPackage getPlayerSenses();
-
-    public abstract boolean inBounds(int x, int y);
-
-
+    public int val() {
+        return val;
+    }
 }

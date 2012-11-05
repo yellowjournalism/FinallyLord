@@ -19,7 +19,6 @@ package actor;
 
 import render.SpriteID;
 import utility.Point;
-import utility.Rand;
 
 public class Actor {
     Point position;
@@ -35,14 +34,48 @@ public class Actor {
 
     }
 
-    public void runTurn() {
-        if (Rand.oneIn(2)) {
-            int x = 1 - Rand.nextInt(3);
-            int y = 1 - Rand.nextInt(3);
-            hasmoved = true;
-            position = position.add(new Point(x, y));
-        }
+    public void runTurn(SensesPackage senses) {
+
     }
+
+//    public void runTurn(SensesPackage senses) {
+//        HashMap<Integer,Tile> tiles=senses.getTiles();
+//        HashMap<Integer,Actor> actors=senses.getActors();
+//        if (Rand.oneIn(1)) {
+//            for(int c=0;c<50;c++){
+//                int x,y;
+//                float chance=Rand.nextFloat();
+//                if(chance<(1f/3f)){
+//                    x=-1;
+//                }
+//                else if(chance<2f/3f){
+//                    x=0;
+//                }
+//                else{
+//                    x=1;
+//                }
+//                chance=Rand.nextFloat();
+//                if(chance<(1f/3f)){
+//                    y=-1;
+//                }
+//                else if(chance<2f/3f){
+//                    y=0;
+//                }
+//                else{
+//                    y=1;
+//                }
+//                int key=senses.genKey(position.getX()+x,position.getY()+y);
+//                if(tiles.containsKey(key)){
+//                    if(tiles.get(key).isPassable()&&!actors.containsKey(key)){
+//                        hasmoved = true;
+//                        position = position.add(new Point(x, y));
+//                        break;
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 
     public boolean hasMoved() {
         return hasmoved;

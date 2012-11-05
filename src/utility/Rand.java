@@ -38,4 +38,8 @@ public class Rand {
         return false;
     }
 
+    public static float nextFloat() {
+        return random.nextFloat();
+    }
+
 }
