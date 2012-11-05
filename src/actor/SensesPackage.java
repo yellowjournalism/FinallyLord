@@ -26,7 +26,8 @@ import java.util.HashMap;
 public class SensesPackage {
     private HashMap<Integer, Actor> actorHashMap;
     private HashMap<Integer, Tile> tileHashMap;
-
+    private boolean playervisible;
+    private Point playerlocation;
     int sizex;
 
     public SensesPackage(HashMap<Integer, Actor> actorHashMap, HashMap<Integer, Tile> tileHashMap, int sizex) {
@@ -39,6 +40,7 @@ public class SensesPackage {
         actorHashMap = new HashMap<Integer, Actor>();
         tileHashMap = new HashMap<Integer, Tile>();
         this.sizex = sizex;
+        playervisible = false;
     }
 
     public HashMap<Integer, Actor> getActors() {
@@ -63,5 +65,33 @@ public class SensesPackage {
 
     public int genKey(Point p) {
         return p.getX() * sizex + p.getY();
+    }
+
+    public void playerLoc(Point p) {
+        playervisible = true;
+        playerlocation = p.copy();
+    }
+
+    public boolean playerVisible() {
+        return playervisible;
+    }
+
+    public Point getPlayerLocation() {
+        return playerlocation;
+    }
+
+    public boolean free(Point p) {//This does not count the player (yet) TODO make this count the player REMEMBER THE SIMILAR CODE IN THE PATHFINDING
+        int key = genKey(p);
+        boolean tilefree = false;
+        boolean actorfree = true;
+        if (tileHashMap.containsKey(key)) {
+            tilefree = tileHashMap.get(key).isPassable();
+        }
+        if (actorHashMap.containsKey(key)) {
+            actorfree = false;
+        }
+
+
+        return tilefree && actorfree;
     }
 }

@@ -17,6 +17,12 @@
 
 package actor;
 
+import utility.Point;
+import world.Map;
+import world.tile.Tile;
+
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: hankbrobeck
@@ -25,14 +31,33 @@ package actor;
  * To change this template use File | Settings | File Templates.
  */
 public class ActionHandler {
-    private static Move move;
+    Player player;
+    Map activemap;
 
-    public static void init() {
-        move = new Move();
+    public ActionHandler(Player p) {
+        player = p;
     }
 
-    public static Move getMove() {
-        return move;
+    public void setActiveMap(Map amap) {
+        activemap = amap;
     }
+
+    public boolean attemptPlayerMove(Point dir) {
+        HashMap<Integer, Tile> tiles = activemap.getTileMap();
+        HashMap<Integer, Actor> actors = activemap.getActorHash();
+        Point newloc = player.getPos().copy();
+        newloc.push(dir);
+        int newkey = activemap.genKey(newloc.getX(), newloc.getY());
+        if (tiles.containsKey(newkey)) {
+            if (tiles.get(newkey).isPassable()) {
+                if (!actors.containsKey(newkey)) {
+                    player.move(dir);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 }

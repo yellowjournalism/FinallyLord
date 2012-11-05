@@ -17,6 +17,7 @@
 
 package actor;
 
+import utility.Point;
 import world.tile.Tile;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class Senses {
     private HashMap<Integer, Actor> actorHashMap;
     private SensesPackage currentSenses;
     private int sizex;
+    Point playerloc;
     private int[][] mult = {
             {1, 0, 0, -1, -1, 0, 0, 1},
             {0, 1, -1, 0, 0, -1, 1, 0},
@@ -33,10 +35,11 @@ public class Senses {
             {1, 0, 0, 1, -1, 0, 0, -1}
     };
 
-    public Senses(HashMap<Integer, Tile> tileHashMap, HashMap<Integer, Actor> actorHashMap, int sizex) {
+    public Senses(Point playerloc, HashMap<Integer, Tile> tileHashMap, HashMap<Integer, Actor> actorHashMap, int sizex) {
         this.tileHashMap = tileHashMap;
         this.actorHashMap = actorHashMap;
         this.sizex = sizex;
+        this.playerloc = playerloc;
     }
 
     private int genKey(int x, int y) {
@@ -55,6 +58,9 @@ public class Senses {
         }
         if (tileHashMap.containsKey(key)) {
             currentSenses.putTile(key, tileHashMap.get(key));
+        }
+        if (playerloc.equals(new Point(x, y))) {
+            currentSenses.playerLoc(playerloc);
         }
 
     }

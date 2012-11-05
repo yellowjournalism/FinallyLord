@@ -28,12 +28,15 @@ public class CharacterSheet {
     int[] stats;
     int HD;
     int hp, maxhp;
+    int attack;
+
 
     public CharacterSheet() {
         stats = new int[Stat.STAT_MAX.val()];
         HD = 10;
         hp = getStat(Stat.CON) * 10;
         maxhp = hp;
+        attack = 10;
     }
 
     public int getStat(Stat stat) {

@@ -32,6 +32,9 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class Pathfinding {
+    private static Point _end;
+    private static Point _start;
+
     public static ArrayList<Point> pathTo(Point start, Point end, SensesPackage senses) {
         HashMap<Integer, Tile> tiles = senses.getTiles();
         HashMap<Integer, Actor> actors = senses.getActors();
@@ -40,6 +43,8 @@ public class Pathfinding {
         ArrayList<PathNode> surroundings = new ArrayList<PathNode>();
         PathNode nodestart = new PathNode(start, null, 0);
         openlist.put(senses.genKey(nodestart.getLocation()), nodestart);
+        _start = start;
+        _end = end;
 
 
         int maxattempts = 10000;
@@ -54,7 +59,7 @@ public class Pathfinding {
             //find the node in the openlist that has the lowest "f" score
             ArrayList<PathNode> opennodes = new ArrayList<PathNode>(openlist.values());
             PathNode curlowest = opennodes.get(0);
-            int lowestf = curlowest.getGscore() + getHCost(end, curlowest);
+            int lowestf = curlowest.getGscore();// + getHCost(_end, curlowest);
             for (int c = 0; c < opennodes.size(); c++) {
 
                 PathNode check = opennodes.get(c);
@@ -87,11 +92,14 @@ public class Pathfinding {
             for (int c = 0; c < surroundings.size(); c++) {
                 PathNode node = surroundings.get(c);
                 int nodeKey = senses.genKey(node.getLocation());
-                boolean free = false;//is the point free?
-                if (tiles.containsKey(nodeKey)) {
-                    if (tiles.get(nodeKey).isPassable()) {
-                        if (!actors.containsKey(nodeKey)) {
-                            free = true;
+                boolean free = isEnd(node.getLocation());//is the point at the _end? If it is we need to add it to the
+                // closed list, even if it normally shouldn't be
+                if (!free) {
+                    if (senses.free(node.getLocation())) {
+                        if (senses.playerVisible()) {
+                            if (!senses.getPlayerLocation().equals(node.getLocation())) {
+                                free = true;
+                            }
                         }
                     }
                 }
@@ -143,11 +151,18 @@ public class Pathfinding {
 
     }
 
-    //    public int getHCost(Point end, PathNode node) {
+    public static boolean isEnd(Point p) {
+        if (p.equals(_end)) {
+            return true;
+        }
+        return false;
+    }
+
+    //    public int getHCost(Point _end, PathNode node) {
 //        int h;
 //        Point nodepos = node.getLocation();
-//        int xDistance = (int) Math.abs(nodepos.x - end.x);
-//        int yDistance = (int) Math.abs(nodepos.y - end.y);
+//        int xDistance = (int) Math.abs(nodepos.x - _end.x);
+//        int yDistance = (int) Math.abs(nodepos.y - _end.y);
 //        if (xDistance > yDistance) {
 //            h = 14 * yDistance + 10 * (xDistance - yDistance);
 //        } else {

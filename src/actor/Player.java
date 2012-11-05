@@ -21,6 +21,7 @@ import utility.Point;
 
 public class Player {
     Point pos;
+    CharacterSheet characterSheet;
 
 
     public Player(Point p) {

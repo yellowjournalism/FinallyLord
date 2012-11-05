@@ -44,7 +44,7 @@ public class Dungeon extends Map {
         actorHash = new HashMap<Integer, Actor>();
         sizex = 30;
         sizey = 30;
-        senses = new Senses(level, actorHash, sizex);
+        senses = new Senses(player_pos, level, actorHash, sizex);
         generate();
     }
 
@@ -59,26 +59,29 @@ public class Dungeon extends Map {
                 } else {
                     level.put(genKey(x, y), Tile.FLOOR_STONE);
                     if (Rand.oneIn(4)) {
-                        actorHash.put(genKey(x, y), new Actor(new Point(x, y), ActorType.goblin));
+                        //actorHash.put(genKey(x, y), new Actor(new Point(x, y), ActorType.goblin));
                     }
                 }
 
 
             }
         }
-        for (int x = 5; x <= 20; x++) {
-            level.put(genKey(x, 5), Tile.WALL_STONE);
-        }
-        for (int x = 5; x <= 20; x++) {
-            level.put(genKey(x, 20), Tile.WALL_STONE);
-        }
-        for (int y = 5; y <= 20; y++) {
-            level.put(genKey(5, y), Tile.WALL_STONE);
-        }
-        for (int y = 5; y <= 20; y++) {
-            level.put(genKey(20, y), Tile.WALL_STONE);
-        }
-        level.put(genKey(10, 5), Tile.FLOOR_STONE);
+        actorHash.put(genKey(11, 10), new Actor(new Point(11, 10), ActorType.goblin));
+        actorHash.put(genKey(10, 10), new Actor(new Point(10, 10), ActorType.goblin));
+        actorHash.put(genKey(20, 10), new Actor(new Point(20, 10), ActorType.goblin));
+//        for (int x = 5; x <= 20; x++) {
+//            level.put(genKey(x, 5), Tile.WALL_STONE);
+//        }
+//        for (int x = 5; x <= 20; x++) {
+//            level.put(genKey(x, 20), Tile.WALL_STONE);
+//        }
+//        for (int y = 5; y <= 20; y++) {
+//            level.put(genKey(5, y), Tile.WALL_STONE);
+//        }
+//        for (int y = 5; y <= 20; y++) {
+//            level.put(genKey(20, y), Tile.WALL_STONE);
+//        }
+//        level.put(genKey(10, 5), Tile.FLOOR_STONE);
 
     }
 
