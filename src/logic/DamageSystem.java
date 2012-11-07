@@ -15,32 +15,35 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package actor;
+package logic;
 
-import utility.Point;
+import actor.Actor;
+import actor.Player;
 
-public class Player {
-    Point pos;
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 11/5/12
+ * Time: 1:12 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class DamageSystem {
+    Player player;
 
+    public DamageSystem(Player p) {
+        this.player = p;
 
-    CharacterSheet characterSheet;
-
-
-    public Player(Point p) {
-        pos = p;
-        characterSheet = new CharacterSheet(new int[]{10, 10, 10, 10, 10, 10});
     }
 
-    public Point getPos() {
-        return pos;
+    public boolean playerAttack(Actor a) {
+        int dmg = player.getCharacterSheet().getAttack();
+        a.getSheet().modHP(-dmg);
+        return true;//TODO implement hit chance, etc and return false when failed
     }
 
-    public void move(Point dir) {
-        pos.push(dir);
+    public boolean attackPlayer(Actor attacker) {
+        int dmg = attacker.getSheet().getAttack();
+        player.getCharacterSheet().modHP(-dmg);
+        return true; //TODO Same as above.
     }
-
-    public CharacterSheet getCharacterSheet() {
-        return characterSheet;
-    }
-
 }

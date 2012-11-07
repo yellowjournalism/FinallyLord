@@ -61,4 +61,10 @@ public class Point {
         return x == _x && y == _y;
     }
 
+    public boolean adjacentTo(Point p) {
+        int dx = x - p.getX();
+        int dy = x - p.getY();
+        return dx >= -1 && dy >= -1 && dx <= 1 && dy <= 1;
+    }
+
 }

@@ -26,19 +26,29 @@ public class Actor {
     private boolean hasmoved;
     AI ai;
     CharacterSheet characterSheet;
+    boolean flagDelete;
 
     public Actor(Point pos, ActorType type) {
         spriteID = type.getSpriteID();
         position = pos;
         ai = new AI(this);
+        flagDelete = false;
+        characterSheet = new CharacterSheet(type.getStats());
     }
 
     public void update() {
-
+        //Log.print("Actor hp: "+characterSheet.getHP());
+        if (characterSheet.isDead()) {
+            flagDelete = true;
+        }
     }
 
     public void runTurn(SensesPackage senses) {
         ai.run(senses);
+    }
+
+    public CharacterSheet getSheet() {
+        return characterSheet;
     }
 
 //    public void runTurn(SensesPackage senses) {
@@ -103,5 +113,9 @@ public class Actor {
     void moveTo(Point pos) {
         position = pos;
         hasmoved = true;
+    }
+
+    public boolean delete() {
+        return flagDelete;
     }
 }

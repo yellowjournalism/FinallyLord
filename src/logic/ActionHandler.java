@@ -15,8 +15,11 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package actor;
+package logic;
 
+import actor.Actor;
+import actor.Player;
+import utility.Log;
 import utility.Point;
 import world.Map;
 import world.tile.Tile;
@@ -31,18 +34,21 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class ActionHandler {
-    Player player;
-    Map activemap;
+    static Player player;
+    static Map activemap;
+    static DamageSystem damageSystem;
 
-    public ActionHandler(Player p) {
+    public static void init(Player p) {
         player = p;
+        damageSystem = new DamageSystem(player);
     }
 
-    public void setActiveMap(Map amap) {
+
+    public static void setActiveMap(Map amap) {
         activemap = amap;
     }
 
-    public boolean attemptPlayerMove(Point dir) {
+    public static boolean attemptPlayerMove(Point dir) {
         HashMap<Integer, Tile> tiles = activemap.getTileMap();
         HashMap<Integer, Actor> actors = activemap.getActorHash();
         Point newloc = player.getPos().copy();
@@ -56,7 +62,20 @@ public class ActionHandler {
                 }
             }
         }
+        if (actors.containsKey(newkey)) {
+            Log.print("player attacked!");
+            damageSystem.playerAttack(actors.get(newkey));
+            return true;
+        }
         return false;
+    }
+
+    public static boolean attackPlayer(Actor attacker) {
+        return damageSystem.attackPlayer(attacker);
+    }
+
+    public static boolean actorAttack(Actor attacker, Actor defender) {
+        return false;//TODO To be implemented
     }
 
 

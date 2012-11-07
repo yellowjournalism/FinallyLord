@@ -31,12 +31,16 @@ public class CharacterSheet {
     int attack;
 
 
-    public CharacterSheet() {
-        stats = new int[Stat.STAT_MAX.val()];
+    public CharacterSheet(int[] stats) {
+        this.stats = stats;
         HD = 10;
         hp = getStat(Stat.CON) * 10;
         maxhp = hp;
-        attack = 10;
+        attack = getStat(Stat.STR);
+    }
+
+    public boolean isDead() {
+        return hp <= 0;
     }
 
     public int getStat(Stat stat) {
@@ -49,5 +53,17 @@ public class CharacterSheet {
 
     public double percievedStrength() {
         return (double) getStat(Stat.STR) * physicalCondition();
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void modHP(int amount) {
+        hp = hp + amount;
+    }
+
+    public int getHP() {
+        return hp;
     }
 }

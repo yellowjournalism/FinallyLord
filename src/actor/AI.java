@@ -17,6 +17,7 @@
 
 package actor;
 
+import logic.ActionHandler;
 import utility.Point;
 
 import java.util.ArrayList;
@@ -46,24 +47,32 @@ public class AI {
             pathindex = 1;
 
         }
-        followPath();//Follow the path (if there is one)
+        boolean moved = followPath();//Follow the path (if there is one)
+        //Can it attack?
+        if (!moved && senses.playerVisible()) {
+            if (parent.getPos().adjacentTo(senses.getPlayerLocation())) {
+                ActionHandler.attackPlayer(parent);
+            }
+        }
 
 
     }
 
-    private void followPath() {
+    private boolean followPath() {
 
         if (pathing) {
             if (path.size() == 0) {
-                return;
+                return false;
             }
             if (pathindex == path.size() - 1) {//we finished the path
                 pathing = false;
-                return;
+                return false;
             }
             parent.moveTo(path.get(pathindex));
             pathindex++;
+            return true;
         }
+        return false;
     }
 
 }

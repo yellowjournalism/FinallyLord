@@ -21,15 +21,22 @@ import render.ActorSprite;
 import render.SpriteID;
 
 public enum ActorType {
-    chicken(ActorSprite.chicken),
-    goblin(ActorSprite.goblin);
+    chicken(ActorSprite.chicken, 1, 1, 1, 1, 1, 1),
+    goblin(ActorSprite.goblin, 4, 14, 6, 4, 3, 4);
     private SpriteID spriteID;
+    int[] stats;
 
-    ActorType(SpriteID sprite) {
+    ActorType(SpriteID sprite, int STR, int DEX, int CON, int INT, int WIS, int CHA) {
         spriteID = sprite;
+        stats = new int[]{STR, DEX, CON, INT, WIS, CHA};//Make sure STAT gets updated if this does
     }
 
     public SpriteID getSpriteID() {
         return spriteID;
     }
+
+    public int[] getStats() {
+        return stats;
+    }
+
 }

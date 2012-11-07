@@ -17,10 +17,10 @@
 
 package logic;
 
-import actor.ActionHandler;
 import actor.Player;
 import org.newdawn.slick.GameContainer;
 import render.Render;
+import utility.Log;
 import utility.Point;
 import world.Dungeon;
 import world.Map;
@@ -31,7 +31,6 @@ public class GameLogic {
     Render render;
     Dungeon dungeon;
     Map activeMap;
-    ActionHandler actionHandler;
 
 
     public GameLogic() {
@@ -40,20 +39,29 @@ public class GameLogic {
         render = new Render(player.getPos());
         dungeon = new Dungeon(player);
         activeMap = dungeon;
-        actionHandler = new ActionHandler(player);
-        actionHandler.setActiveMap(activeMap);
+        ActionHandler.init(player);
+        ActionHandler.setActiveMap(activeMap);
+
     }
 
     public void update(GameContainer gc) {
         inputHandler.update(gc.getInput());
-        activeMap.update();
+        boolean flagsenses = false;
         if (inputHandler.hasMoved()) {
-            if (actionHandler.attemptPlayerMove(inputHandler.getMovement())) {
-                render.flagSenses();
+            if (ActionHandler.attemptPlayerMove(inputHandler.getMovement())) {
+                flagsenses = true;
                 //Movement successful, run actor turns turns;
                 activeMap.runTurns();
+                Log.print("Player HP" + player.getCharacterSheet().getHP());
+
             }
         }
+        activeMap.update();
+        if (flagsenses) {
+            render.flagSenses();
+        }
+
+
     }
 
     public void render() {

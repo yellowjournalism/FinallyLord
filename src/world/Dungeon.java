@@ -96,6 +96,10 @@ public class Dungeon extends Map {
         for (int c = 0; c < actors.size(); c++) {
             Actor a = actors.get(c);
             a.update();
+            Point pos = a.getPos();
+            if (a.delete()) {
+                actorHash.remove(genKey(pos.getX(), pos.getY()));
+            }
         }
     }
 

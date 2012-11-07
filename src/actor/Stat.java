@@ -28,6 +28,7 @@ public enum Stat {
     STR, DEX, CON, INT, WIS, CHA,
     STAT_MAX;//Keep this last!
 
+    //MAKE SURE ACTORTYPE GETS UPDATED IF THIS DOES
     public int val() {
         return this.ordinal();
     }
