@@ -77,6 +77,10 @@ public class InputHandler {
             hasmoved = true;
             movement = new Point(-1, -1);
         }
+        if (checkKeys(Input.KEY_SPACE, Input.KEY_A)) {
+            hascmd = true;
+            command = Command.INTERACT;
+        }
     }
 
     public boolean hasMoved() {

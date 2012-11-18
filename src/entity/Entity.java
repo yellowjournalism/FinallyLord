@@ -17,6 +17,8 @@
 
 package entity;
 
+import utility.Point;
+
 /**
  * Created with IntelliJ IDEA.
  * User: hankbrobeck
@@ -25,4 +27,11 @@ package entity;
  * To change this template use File | Settings | File Templates.
  */
 public class Entity {
+    private Point position;
+
+    public Entity(Point p, EntityType t) {
+        position = p;
+    }
+
+
 }
