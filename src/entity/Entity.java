@@ -49,6 +49,10 @@ public abstract class Entity {
     }
 
     public void turnUpdate() {
+
+    }
+
+    public void update() {
         effectPackages.clear();
         controller.update();
     }

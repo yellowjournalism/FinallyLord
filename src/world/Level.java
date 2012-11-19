@@ -69,6 +69,7 @@ public class Level {
                         changeto = level + 1;
                     }
                 }
+                ent.update();
             }
         }
         //Update actores
