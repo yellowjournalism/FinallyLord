@@ -17,7 +17,13 @@
 
 package entity;
 
+import effect.EffectPackage;
+import entity.controllers.Controller;
+import logic.Command;
+import render.SpriteID;
 import utility.Point;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,11 +32,72 @@ import utility.Point;
  * Time: 2:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Entity {
-    private Point position;
+public abstract class Entity {
+    protected Point position;
+    protected Controller controller;
+    protected ArrayList<Command> availableCommands;
+    protected ArrayList<EntityFlag> flags;
+    protected ArrayList<EffectPackage> effectPackages;
 
-    public Entity(Point p, EntityType t) {
+
+    protected Entity(Point p) {
         position = p;
+        availableCommands = new ArrayList<Command>();
+        flags = new ArrayList<EntityFlag>();
+        effectPackages = new ArrayList<EffectPackage>();
+
+    }
+
+    public void turnUpdate() {
+        effectPackages.clear();
+        controller.update();
+    }
+
+    public void addEffectPackage(EffectPackage effectPackage) {
+        effectPackages.add(effectPackage);
+    }
+
+    public ArrayList<EffectPackage> getEffectPackages() {
+        return effectPackages;
+    }
+
+    protected void flagCommand(Command c) {
+        availableCommands.add(c);
+    }
+
+    public ArrayList<Command> getAvailableCommands() {
+        return availableCommands;
+    }
+
+    public void addFlag(EntityFlag flag) {
+        flags.add(flag);
+    }
+
+    public boolean hasFlag(EntityFlag flag) {
+        for (int x = 0; x < flags.size(); x++) {
+            if (flag == flags.get(x)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public SpriteID getSpriteID() {
+        return controller.getSpriteID();
+    }
+
+    public abstract void interact(Command c);
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public boolean isPassable() {
+        return controller.isPassable();
+    }
+
+    public boolean isOpaque() {
+        return controller.isOpaque();
     }
 
 

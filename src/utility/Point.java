@@ -63,7 +63,7 @@ public class Point {
 
     public boolean adjacentTo(Point p) {
         int dx = x - p.getX();
-        int dy = x - p.getY();
+        int dy = y - p.getY();
         return dx >= -1 && dy >= -1 && dx <= 1 && dy <= 1;
     }
 

@@ -15,8 +15,9 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package entity;
+package entity.controllers;
 
+import entity.Entity;
 import logic.Command;
 import render.SpriteID;
 
@@ -28,9 +29,10 @@ import render.SpriteID;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class Controller {
-    private Entity parent;
-    private SpriteID spriteID;
+    protected Entity parent;
+    protected SpriteID spriteID;
     boolean passable, opaque;
+
 
     public Controller(Entity e) {
         parent = e;
@@ -48,7 +50,9 @@ public abstract class Controller {
         return opaque;
     }
 
-    public abstract SpriteID getSpriteID();
+    public SpriteID getSpriteID() {
+        return spriteID;
+    }
 
 
 }

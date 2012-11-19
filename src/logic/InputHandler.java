@@ -22,15 +22,15 @@ import utility.Point;
 
 //You can guess what this does
 public class InputHandler {
-    private boolean hasmoved;
-    private Point movement;
+    private boolean hasdirect;
+    private Point direction;
     private boolean hascmd;
     private Command command;
     private Input input;
 
     public void update(Input input) {
         this.input = input;
-        hasmoved = false;
+        hasdirect = false;
         hascmd = false;
         pollMovement();
 
@@ -44,51 +44,63 @@ public class InputHandler {
         return false;
     }
 
+    private boolean checkKey(int a) {
+        return input.isKeyPressed(a);
+    }
+
     public void pollMovement() {
         if (checkKeys(Input.KEY_NUMPAD8, Input.KEY_K)) {
-            hasmoved = true;
-            movement = new Point(0, -1);
+            hasdirect = true;
+            direction = new Point(0, -1);
         }
         if (checkKeys(Input.KEY_NUMPAD9, Input.KEY_U)) {
-            hasmoved = true;
-            movement = new Point(1, -1);
+            hasdirect = true;
+            direction = new Point(1, -1);
         }
         if (checkKeys(Input.KEY_NUMPAD6, Input.KEY_L)) {
-            hasmoved = true;
-            movement = new Point(1, 0);
+            hasdirect = true;
+            direction = new Point(1, 0);
         }
         if (checkKeys(Input.KEY_NUMPAD3, Input.KEY_N)) {
-            hasmoved = true;
-            movement = new Point(1, 1);
+            hasdirect = true;
+            direction = new Point(1, 1);
         }
         if (checkKeys(Input.KEY_NUMPAD2, Input.KEY_J)) {
-            hasmoved = true;
-            movement = new Point(0, 1);
+            hasdirect = true;
+            direction = new Point(0, 1);
         }
         if (checkKeys(Input.KEY_NUMPAD1, Input.KEY_B)) {
-            hasmoved = true;
-            movement = new Point(-1, 1);
+            hasdirect = true;
+            direction = new Point(-1, 1);
         }
         if (checkKeys(Input.KEY_NUMPAD4, Input.KEY_H)) {
-            hasmoved = true;
-            movement = new Point(-1, 0);
+            hasdirect = true;
+            direction = new Point(-1, 0);
         }
         if (checkKeys(Input.KEY_NUMPAD7, Input.KEY_Y)) {
-            hasmoved = true;
-            movement = new Point(-1, -1);
+            hasdirect = true;
+            direction = new Point(-1, -1);
         }
         if (checkKeys(Input.KEY_SPACE, Input.KEY_A)) {
             hascmd = true;
-            command = Command.INTERACT;
+            command = Command.OPEN;
+        }
+        if (checkKey(Input.KEY_PERIOD)) {
+            hascmd = true;
+            command = Command.DOWN;
+        }
+        if (checkKey(Input.KEY_COMMA)) {
+            hascmd = true;
+            command = Command.UP;
         }
     }
 
-    public boolean hasMoved() {
-        return hasmoved;
+    public boolean hasDirect() {
+        return hasdirect;
     }
 
-    public Point getMovement() {
-        return movement;
+    public Point getDirection() {
+        return direction;
     }
 
     public boolean hasCommand() {

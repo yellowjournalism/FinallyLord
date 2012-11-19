@@ -35,7 +35,7 @@ public class GameLogic {
 
     public GameLogic() {
         inputHandler = new InputHandler();
-        player = new Player(new Point(0, 0));
+        player = new Player(new Point(1, 1));
         render = new Render(player.getPos());
         dungeon = new Dungeon(player);
         activeMap = dungeon;
@@ -47,14 +47,20 @@ public class GameLogic {
     public void update(GameContainer gc) {
         inputHandler.update(gc.getInput());
         boolean flagsenses = false;
-        if (inputHandler.hasMoved()) {
-            if (ActionHandler.attemptPlayerMove(inputHandler.getMovement())) {
+        if (inputHandler.hasDirect()) {
+            if (ActionHandler.attemptPlayerMove(inputHandler.getDirection())) {
                 flagsenses = true;
                 //Movement successful, run actor turns turns;
                 activeMap.runTurns();
                 Log.print("Player HP" + player.getCharacterSheet().getHP());
 
             }
+        }
+        //TODO find a way to work commands into turns
+        if (inputHandler.hasCommand()) {
+            //TODO There needs to be a system for directional/aimed commands
+            flagsenses = true;
+            activeMap.sendPlayerCommand(inputHandler.getCommand());
         }
         activeMap.update();
         if (flagsenses) {

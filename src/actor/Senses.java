@@ -17,14 +17,17 @@
 
 package actor;
 
+import entity.Entity;
 import utility.Point;
 import world.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Senses {
     private HashMap<Integer, Tile> tileHashMap;
     private HashMap<Integer, Actor> actorHashMap;
+    private HashMap<Integer, ArrayList<Entity>> entities;
     private SensesPackage currentSenses;
     private int sizex;
     Point playerloc;
@@ -35,9 +38,10 @@ public class Senses {
             {1, 0, 0, 1, -1, 0, 0, -1}
     };
 
-    public Senses(Point playerloc, HashMap<Integer, Tile> tileHashMap, HashMap<Integer, Actor> actorHashMap, int sizex) {
+    public Senses(Point playerloc, HashMap<Integer, Tile> tileHashMap, HashMap<Integer, Actor> actorHashMap, HashMap<Integer, ArrayList<Entity>> entities, int sizex) {
         this.tileHashMap = tileHashMap;
         this.actorHashMap = actorHashMap;
+        this.entities = entities;
         this.sizex = sizex;
         this.playerloc = playerloc;
     }
@@ -62,15 +66,29 @@ public class Senses {
         if (playerloc.equals(new Point(x, y))) {
             currentSenses.playerLoc(playerloc);
         }
+        if (entities.containsKey(key)) {
+            currentSenses.putEntities(key, entities.get(key));
+        }
 
     }
 
     private boolean isBlocked(int x, int y) {
         int key = genKey(x, y);
+        boolean tileblocked = true;
         if (tileHashMap.containsKey(key)) {
-            return tileHashMap.get(key).isOpaque();
+            tileblocked = tileHashMap.get(key).isOpaque();
         }
-        return true;
+        boolean entblocked = false;
+        if (entities.containsKey(key)) {
+            ArrayList<Entity> ents = entities.get(key);
+            for (int c = 0; c < ents.size(); c++) {
+                Entity ent = ents.get(c);
+                if (!ent.isOpaque()) {
+                    entblocked = true;
+                }
+            }
+        }
+        return entblocked && tileblocked;
     }
 
     private void castLight(int cx, int cy, int row, double start,

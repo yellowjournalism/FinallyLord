@@ -15,8 +15,9 @@
  *      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package entity;
+package entity.controllers;
 
+import entity.Entity;
 import logic.Command;
 import render.SpriteID;
 
@@ -50,25 +51,20 @@ public class DoorController extends Controller {
     @Override
     public void command(Command command) {
         switch (command) {
-            case INTERACT:
+            case OPEN:
                 if (open) {
                     open = false;
                     passable = false;
                     opaque = true;
+                    spriteID = closedsprite;
                 } else {
                     open = true;
                     passable = true;
                     opaque = false;
+                    spriteID = opensprite;
                 }
 
         }
     }
 
-    @Override
-    public SpriteID getSpriteID() {
-        if (open) {
-            return opensprite;
-        }
-        return closedsprite;
-    }
 }

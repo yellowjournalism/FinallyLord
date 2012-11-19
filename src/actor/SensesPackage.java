@@ -17,15 +17,18 @@
 
 package actor;
 
+import entity.Entity;
 import utility.Point;
 import world.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //Used to return a single
 public class SensesPackage {
     private HashMap<Integer, Actor> actorHashMap;
     private HashMap<Integer, Tile> tileHashMap;
+    private HashMap<Integer, ArrayList<Entity>> entities;
     private boolean playervisible;
     private Point playerlocation;
     int sizex;
@@ -39,6 +42,7 @@ public class SensesPackage {
     public SensesPackage(int sizex) {
         actorHashMap = new HashMap<Integer, Actor>();
         tileHashMap = new HashMap<Integer, Tile>();
+        entities = new HashMap<Integer, ArrayList<Entity>>();
         this.sizex = sizex;
         playervisible = false;
     }
@@ -51,12 +55,20 @@ public class SensesPackage {
         return tileHashMap;
     }
 
+    public HashMap<Integer, ArrayList<Entity>> getEntities() {
+        return entities;
+    }
+
     public void putActor(int key, Actor a) {
         actorHashMap.put(key, a);
     }
 
     public void putTile(int key, Tile t) {
         tileHashMap.put(key, t);
+    }
+
+    public void putEntities(int key, ArrayList<Entity> ents) {
+        entities.put(key, ents);
     }
 
     public int genKey(int x, int y) {
@@ -79,6 +91,7 @@ public class SensesPackage {
     public Point getPlayerLocation() {
         return playerlocation;
     }
+
 
     public boolean free(Point p) {//This does not count the player (yet) TODO make this count the player REMEMBER THE SIMILAR CODE IN THE PATHFINDING
         int key = genKey(p);

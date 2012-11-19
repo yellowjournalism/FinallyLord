@@ -17,13 +17,7 @@
 
 package entity;
 
-/**
- * Created with IntelliJ IDEA.
- * User: hankbrobeck
- * Date: 10/24/12
- * Time: 3:06 PM
- * To change this template use File | Settings | File Templates.
- */
+//Not currently used, will delete soon probably
 public enum EntityType {
     DOOR_STONE
 

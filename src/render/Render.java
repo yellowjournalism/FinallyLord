@@ -19,6 +19,7 @@ package render;
 
 import actor.Actor;
 import actor.SensesPackage;
+import entity.Entity;
 import org.newdawn.slick.Image;
 import render.ui.MessageBox;
 import utility.Log;
@@ -26,6 +27,7 @@ import utility.Point;
 import world.Map;
 import world.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Render {
@@ -73,6 +75,7 @@ public class Render {
 //        HashMap<Integer, Actor> actorHashMap = map.getActorHash();
         HashMap<Integer, Tile> tileHashMap = playerSenses.getTiles();
         HashMap<Integer, Actor> actorHashMap = playerSenses.getActors();
+        HashMap<Integer, ArrayList<Entity>> entities = playerSenses.getEntities();
 
 
         Point top_left = new Point(playerpos.getX() - tilesx, playerpos.getY() - tilesy);
@@ -86,6 +89,14 @@ public class Render {
                     if (tile != null) {
                         Image image = environment.getSprite(tile.getSpriteID());
                         image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
+                    }
+                    //Entities
+                    ArrayList<Entity> ents = entities.get(map.genKey(x, y));
+                    if (ents != null && ents.size() > 0) {
+                        Entity entity = ents.get(0);
+                        Image image = environment.getSprite(entity.getSpriteID());
+                        image.draw((float) ((x - top_left.getX()) * ppt), (float) ((y - top_left.getY()) * ppt), scale);
+
                     }
                     //Actors
                     Actor actor = actorHashMap.get(map.genKey(x, y));

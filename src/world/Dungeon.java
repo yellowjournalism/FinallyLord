@@ -17,111 +17,80 @@
 
 package world;
 
-import actor.*;
+import actor.Actor;
+import actor.ActorType;
+import actor.Player;
+import actor.SensesPackage;
+import entity.types.StoneStair;
+import utility.Log;
 import utility.Point;
 import utility.Rand;
 import world.tile.Tile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Dungeon extends Map {
-    HashMap<Integer, Tile> level; //TODO replace this with proper level class for multiple level dungeons
-    ArrayList<Actor> actors;
-    HashMap<Integer, Actor> actorHash;
-    Senses senses;
-    Point player_pos;
-    Player player;
 
-    int sizex, sizey;
 
     public Dungeon(Player p) {
+        super(p, 20, 20);
         player = p;
-        player_pos = p.getPos();
 
-        level = new HashMap<Integer, Tile>();
-        actors = new ArrayList<Actor>();
-        actorHash = new HashMap<Integer, Actor>();
-        sizex = 30;
-        sizey = 30;
-        senses = new Senses(player_pos, level, actorHash, sizex);
+
         generate();
     }
 
     private void generate() {
-        for (int x = 0; x < sizex; x++) {
+        //TODO make better generation code
+        for (int c = 0; c < levels.size(); c++) {
+            Level clevel = levels.get(c);
+            for (int x = 0; x < sizex; x++) {
 
-            for (int y = 0; y < sizey; y++) {
-                if (x == 0 || x == sizex - 1) {
-                    level.put(genKey(x, y), Tile.WALL_STONE);
-                } else if (y == 0 || y == sizey - 1) {
-                    level.put(genKey(x, y), Tile.WALL_STONE);
-                } else {
-                    level.put(genKey(x, y), Tile.FLOOR_STONE);
-                    if (Rand.oneIn(4)) {
-                        //actorHash.put(genKey(x, y), new Actor(new Point(x, y), ActorType.goblin));
+                for (int y = 0; y < sizey; y++) {
+                    if (x == 0 || x == sizex - 1) {
+                        clevel.tileHashMap.put(genKey(x, y), Tile.WALL_STONE);
+                    } else if (y == 0 || y == sizey - 1) {
+                        clevel.tileHashMap.put(genKey(x, y), Tile.WALL_STONE);
+                    } else {
+                        clevel.tileHashMap.put(genKey(x, y), Tile.FLOOR_STONE);
+
                     }
+
+
+                }
+            }
+            //Either create stairs from previous level if it isn't the top floor;
+            if (clevel.level != 0) {
+                ArrayList<Point> upstairs = levels.get(clevel.level - 1).downStairLocs();
+                for (int z = 0; z < upstairs.size(); z++) {
+                    clevel.createEntity(new StoneStair(upstairs.get(z), true));
                 }
 
-
             }
-        }
-        actorHash.put(genKey(11, 10), new Actor(new Point(11, 10), ActorType.goblin));
-        actorHash.put(genKey(10, 10), new Actor(new Point(10, 10), ActorType.goblin));
-        actorHash.put(genKey(20, 10), new Actor(new Point(20, 10), ActorType.goblin));
-//        for (int x = 5; x <= 20; x++) {
-//            level.put(genKey(x, 5), Tile.WALL_STONE);
-//        }
-//        for (int x = 5; x <= 20; x++) {
-//            level.put(genKey(x, 20), Tile.WALL_STONE);
-//        }
-//        for (int y = 5; y <= 20; y++) {
-//            level.put(genKey(5, y), Tile.WALL_STONE);
-//        }
-//        for (int y = 5; y <= 20; y++) {
-//            level.put(genKey(20, y), Tile.WALL_STONE);
-//        }
-//        level.put(genKey(10, 5), Tile.FLOOR_STONE);
-
-    }
-
-    public int genKey(int x, int y) {
-        return x * sizex + y;
-    }
-
-    @Override
-    public void update() {
-        actors = new ArrayList<Actor>(actorHash.values());
-
-        for (int c = 0; c < actors.size(); c++) {
-            Actor a = actors.get(c);
-            a.update();
-            Point pos = a.getPos();
-            if (a.delete()) {
-                actorHash.remove(genKey(pos.getX(), pos.getY()));
+            //create a stair down
+            if (clevel.level != levels.size() - 1) {
+                int downstairx, downstairy;
+                int runnum = 0;
+                while (true) {
+                    Log.print(runnum + "");
+                    downstairx = Rand.randInt(2, sizex - 1);
+                    downstairy = Rand.randInt(2, sizey - 1);
+                    if (clevel.entityFree(downstairx, downstairy)) {
+                        break;
+                    }
+                    runnum++;
+                }
+                clevel.createEntity(new StoneStair(new Point(downstairx, downstairy), false));
             }
+            clevel.actorHashMap.put(genKey(10, 10), new Actor(new Point(10, 10), ActorType.goblin));
         }
+
     }
 
-    @Override
-    public void runTurns() {
-        for (int c = 0; c < actors.size(); c++) {
-            Actor actor = actors.get(c);
-            Point oldpos = actor.getPos().copy();
-
-            actor.runTurn(senses.shadowCasting(oldpos.getX(), oldpos.getY(), 20));
-            if (actor.hasMoved()) {
-                actorHash.remove(genKey(oldpos.getX(), oldpos.getY()));
-                Point newpos = actor.getPos().copy();
-                actorHash.put(genKey(newpos.getX(), newpos.getY()), actor);
-            }
-            actor.moveHandled();
-        }
-    }
 
     @Override
     public SensesPackage getPlayerSenses() {
-        return senses.shadowCasting(player_pos.getX(), player_pos.getY(), 20);//TODO implement view distance system
+        return currentLevel.senses.shadowCasting(player.getPos().getX(), player.getPos().getY(), 20);//TODO implement view distance system
     }
 
     @Override
@@ -133,19 +102,4 @@ public class Dungeon extends Map {
     }
 
 
-    @Override
-    public HashMap<Integer, Tile> getTileMap() {
-        return level;
-    }
-
-    @Override
-    public ArrayList<Actor> getActors() {
-        return actors;
-
-    }
-
-    @Override
-    public HashMap<Integer, Actor> getActorHash() {
-        return actorHash;
-    }
 }

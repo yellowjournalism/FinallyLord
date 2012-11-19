@@ -19,24 +19,63 @@ package world;
 
 
 import actor.Actor;
+import actor.Player;
 import actor.SensesPackage;
+import logic.Command;
 import world.tile.Tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Map {
-    public abstract HashMap<Integer, Tile> getTileMap();
+    ArrayList<Level> levels;
+    Level currentLevel;
+    Player player;
 
-    public abstract ArrayList<Actor> getActors();
+    int sizex, sizey;
 
-    public abstract HashMap<Integer, Actor> getActorHash();
+    public Map(Player p, int sizex, int sizey) {
+        this.sizex = sizex;
+        this.sizey = sizey;
+        player = p;
+        levels = new ArrayList<Level>();
+        for (int x = 0; x < 10; x++) {
+            levels.add(new Level(p, levels, x, sizex, sizey));
+        }
+        currentLevel = levels.get(0);
 
-    public abstract int genKey(int x, int y);
+    }
 
-    public abstract void update();
+    public HashMap<Integer, Tile> getTileMap() {
+        return currentLevel.getTileHashMap();
+    }
 
-    public abstract void runTurns();
+
+    public HashMap<Integer, Actor> getActorHash() {
+        return currentLevel.getActorHashMap();
+    }
+
+    public int genKey(int x, int y) {
+        return x * sizex + y;
+    }
+
+    public void update() {
+        currentLevel.update();
+        if (currentLevel.levelchange) {
+            Level oldlevel = currentLevel;
+            currentLevel = levels.get(oldlevel.changeto);
+            oldlevel.levelChanged();
+
+        }
+    }
+
+    public void runTurns() {
+        currentLevel.runTurns();
+    }
+
+    public void sendPlayerCommand(Command command) {
+        currentLevel.sendPlayerCommand(command);
+    }
 
     public abstract SensesPackage getPlayerSenses();
 
