@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of Finally Lord.
+  ~
+  ~      Finally Lord is free software: you can redistribute it and/or modify
+  ~      it under the terms of the GNU General Public License as published by
+  ~      the Free Software Foundation, either version 3 of the License, or
+  ~      (at your option) any later version.
+  ~
+  ~      Finally Lord is distributed in the hope that it will be useful,
+  ~      but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~      GNU General Public License for more details.
+  ~
+  ~      You should have received a copy of the GNU General Public License
+  ~      along with Finally Lord.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<nifty>
+    <screen id="start" controller="de.lessvoid.nifty.controls.DefaultController">
+        <layer id="layer" backgroundColor="#003f" childLayout="center">
+            <panel height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f"
+                   childLayout="center" visibleToMouse="true">
+                <text font="verdana-24-shadow.fnt" text="Hello World!"
+                      align="center" valign="center"/>
+            </panel>
+        </layer>
+    </screen>
+</nifty>
