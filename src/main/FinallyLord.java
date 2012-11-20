@@ -17,18 +17,14 @@
 
 package main;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.slick2d.input.PlainSlickInputSystem;
-import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
-import de.lessvoid.nifty.slick2d.sound.SlickSoundDevice;
-import de.lessvoid.nifty.slick2d.time.LWJGLTimeProvider;
+
 import logic.GameLogic;
 import org.newdawn.slick.*;
 
 
 public class FinallyLord extends BasicGame {
     GameLogic gameLogic;
-    Nifty nifty;
+
 
     public FinallyLord() {
         super("Finally Lord");
@@ -36,44 +32,8 @@ public class FinallyLord extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        gameLogic = new GameLogic();
+        gameLogic = new GameLogic(gameContainer);
         gameContainer.getGraphics().setBackground(new Color(0.1f, 0.1f, 0.1f));
-        nifty = new Nifty(new SlickRenderDevice(gameContainer), new SlickSoundDevice(),
-                new PlainSlickInputSystem(), new LWJGLTimeProvider());
-        nifty.fromXml("data/UI/uitest.xml", "start");
-//        new ScreenBuilder("HelloScreen") {
-//            // This is a bit of Java magic.  We are defining the screen as an
-//            // anonymous inner class, but we need to put some code inside the
-//            // constructor of this anonymous class.  The use of {} without any
-//            // declarations tells java that the code inside the block is to used
-//            // as the constructor
-//            {
-//                // Each screen has one or more layers
-//                layer(new LayerBuilder() {
-//                    {
-//                        // Layout the child elements in the middle
-//                        childLayoutCenter();
-//                        // Each layer can have one or more panel
-//                        panel(new PanelBuilder() {
-//                            {
-//                                // We simply have an empty panel with a
-//                                // translucent background
-//                                alignCenter();
-//                                valignCenter();
-//                                childLayoutCenter();
-//                                width(percentage(100));
-//                                height(percentage(100));
-//
-//                                // color is expressed using the RGBA notation
-//                                backgroundColor("#ffffff88");
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//            // Build this screen and let the nifty object manage it
-//        }.build(nifty);
-//        nifty.gotoScreen("HelloScreen");
 
     }
 
@@ -85,7 +45,7 @@ public class FinallyLord extends BasicGame {
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
         gameLogic.render();
-        nifty.render(false);
+
 
     }
 }

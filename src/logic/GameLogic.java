@@ -20,6 +20,7 @@ package logic;
 import actor.Player;
 import org.newdawn.slick.GameContainer;
 import render.Render;
+import render.ui.GUI;
 import utility.Log;
 import utility.Point;
 import world.Dungeon;
@@ -31,9 +32,11 @@ public class GameLogic {
     Render render;
     Dungeon dungeon;
     Map activeMap;
+    GameContainer gameContainer;
+    GUI gui;
 
 
-    public GameLogic() {
+    public GameLogic(GameContainer gc) {
         inputHandler = new InputHandler();
         player = new Player(new Point(1, 1));
         render = new Render(player.getPos());
@@ -41,10 +44,13 @@ public class GameLogic {
         activeMap = dungeon;
         ActionHandler.init(player);
         ActionHandler.setActiveMap(activeMap);
+        gameContainer = gc;
+        gui = new GUI(gameContainer);
 
     }
 
     public void update(GameContainer gc) {
+        gui.update();
         inputHandler.update(gc.getInput());
         boolean flagsenses = false;
         if (inputHandler.hasDirect()) {
@@ -74,6 +80,7 @@ public class GameLogic {
         //TODO handle player state to switch between maps
         //REMEMBER TO INCLUDE UPDATING THE ACTIONHANDLER!!!!
         render.render(activeMap);
+        gui.render();
     }
 
 }
