@@ -21,6 +21,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import render.ui.TWLStateBasedGame;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -37,7 +39,14 @@ public class Game extends TWLStateBasedGame {
 
     @Override
     protected URL getThemeURL() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        File themeFile = new File("data/ui/chutzpah.xml");
+        URL url = null;
+        try {
+            url = themeFile.toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 
     @Override

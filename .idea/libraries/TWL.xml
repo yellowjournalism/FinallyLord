@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="TWL">
+    <CLASSES>
+      <root url="file://C:/GameLibs/TWL" />
+      <root url="file://C:/GameLibs/TWL" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://C:/GameLibs/TWL/TWL/src" />
+      <root url="file://C:/GameLibs/TWL/TWL/src-beans" />
+      <root url="file://C:/GameLibs/TWL/TWL/test" />
+      <root url="file://C:/GameLibs/TWL/TWLEffects/src" />
+      <root url="file://C:/GameLibs/TWL/TWLExamples/src" />
+    </SOURCES>
+    <jarDirectory url="file://C:/GameLibs/TWL" recursive="false" />
+  </library>
+</component>

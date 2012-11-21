@@ -18,6 +18,7 @@
 package main;
 
 
+import de.matthiasmann.twl.Button;
 import logic.GameLogic;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -25,14 +26,40 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import render.ui.BasicTWLGameState;
+import render.ui.RootPane;
+import utility.Log;
 
 
 public class FinallyLord extends BasicTWLGameState {
     GameLogic gameLogic;
+    private Button btn;
 
 
     public FinallyLord() {
 
+    }
+
+
+    @Override
+    protected RootPane createRootPane() {
+        RootPane rp = super.createRootPane();
+        rp.setTheme("mainMenu");
+
+        btn = new Button("Hello World");
+        btn.addCallback(new Runnable() {
+            public void run() {
+                Log.print("It works!");
+            }
+        });
+
+        rp.add(btn);
+        return rp;
+    }
+
+    @Override
+    protected void layoutRootPane() {
+        btn.adjustSize();
+        btn.setPosition(100, 100);
     }
 
     @Override
