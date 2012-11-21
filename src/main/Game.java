@@ -17,14 +17,32 @@
 
 package main;
 
-import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import render.ui.TWLStateBasedGame;
 
-public class Main {
-    public static void main(String[] args) throws SlickException {
-        AppGameContainer app = new AppGameContainer(new Game("FinallyLord"));
-        app.setDisplayMode(1280, 720, false);
-        app.setVSync(true);
-        app.start();
+import java.net.URL;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: hankbrobeck
+ * Date: 11/20/12
+ * Time: 11:47 AM
+ * To change this template use File | Settings | File Templates.
+ */
+public class Game extends TWLStateBasedGame {
+    public Game(String name) {
+        super(name);
+    }
+
+    @Override
+    protected URL getThemeURL() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void initStatesList(GameContainer gameContainer) throws SlickException {
+        addState(new FinallyLord());
+        enterState(0);
     }
 }

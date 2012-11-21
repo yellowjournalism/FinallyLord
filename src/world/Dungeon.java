@@ -35,8 +35,6 @@ public class Dungeon extends Map {
     public Dungeon(Player p) {
         super(p, 20, 20);
         player = p;
-
-
         generate();
     }
 
@@ -82,7 +80,7 @@ public class Dungeon extends Map {
                 }
                 clevel.createEntity(new StoneStair(new Point(downstairx, downstairy), false));
             }
-            clevel.actorHashMap.put(genKey(10, 10), new Actor(new Point(10, 10), ActorType.goblin));
+            clevel.actorHashMap.put(genKey(8, 8), new Actor(new Point(8, 8), ActorType.goblin));
         }
 
     }

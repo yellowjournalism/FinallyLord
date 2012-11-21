@@ -19,33 +19,40 @@ package main;
 
 
 import logic.GameLogic;
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+import render.ui.BasicTWLGameState;
 
 
-public class FinallyLord extends BasicGame {
+public class FinallyLord extends BasicTWLGameState {
     GameLogic gameLogic;
 
 
     public FinallyLord() {
-        super("Finally Lord");
+
     }
 
     @Override
-    public void init(GameContainer gameContainer) throws SlickException {
+    public int getID() {
+        return 0;
+    }
+
+    @Override
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         gameLogic = new GameLogic(gameContainer);
         gameContainer.getGraphics().setBackground(new Color(0.1f, 0.1f, 0.1f));
-
     }
 
     @Override
-    public void update(GameContainer gameContainer, int i) throws SlickException {
-        gameLogic.update(gameContainer);
-    }
-
-    @Override
-    public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         gameLogic.render();
+    }
 
-
+    @Override
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        gameLogic.update(gameContainer);
     }
 }
