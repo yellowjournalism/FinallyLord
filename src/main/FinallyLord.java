@@ -20,6 +20,7 @@ package main;
 
 import de.matthiasmann.twl.Button;
 import logic.GameLogic;
+import logic.GameStateHandler;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -27,7 +28,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import render.ui.BasicTWLGameState;
 import render.ui.RootPane;
-import utility.Log;
 
 
 public class FinallyLord extends BasicTWLGameState {
@@ -43,12 +43,12 @@ public class FinallyLord extends BasicTWLGameState {
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
-        rp.setTheme("mainMenu");
 
-        btn = new Button("Hello World");
+
+        btn = new Button("Main Menu");
         btn.addCallback(new Runnable() {
             public void run() {
-                Log.print("It works!");
+                GameStateHandler.goToMenu();
             }
         });
 

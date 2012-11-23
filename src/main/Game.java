@@ -17,6 +17,7 @@
 
 package main;
 
+import logic.GameStateHandler;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import render.ui.TWLStateBasedGame;
@@ -25,16 +26,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created with IntelliJ IDEA.
- * User: hankbrobeck
- * Date: 11/20/12
- * Time: 11:47 AM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Game extends TWLStateBasedGame {
     public Game(String name) {
         super(name);
+        GameStateHandler.init(this);
     }
 
     @Override
@@ -51,7 +47,9 @@ public class Game extends TWLStateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+        addState(new MainMenu());
         addState(new FinallyLord());
-        enterState(0);
+
+        enterState(1);
     }
 }
